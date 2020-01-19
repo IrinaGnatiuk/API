@@ -25,6 +25,21 @@ class Order(models.Model):
         self.save()
         return full_price
 
+    def get_serialize_order(self):
+        dishes = self.dishes.all()
+        order_dishes = []
+        for dish in dishes:
+            order_dishes.append({
+                "dish_name": dish.name,
+                "dish_price": dish.price,
+                "count": dish.count
+            })
+        return {
+            "order№": self.id,
+            "dishes": order_dishes,
+            "full_price": self.full_price,
+        }
+
 
 class ShippingOrder(models.Model):
     FILTER_TYPES_payment = (
